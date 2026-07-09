@@ -1,0 +1,18 @@
+# Build artifacts
+**/build/
+**/cmake_targets/ran_build/
+**/*.o
+**/*.a
+**/*.so
+**/*.pyc
+**/__pycache__/
+*.log
+*.swp
+*.tmp
+
+# Editor files
+.vscode/
+.idea/
+
+# Local environment
+*.local
