@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+service PredictionService {
+  rpc PredictState (PredictionRequest) returns (PredictionResponse);
+}
+message PredictionRequest {
+  repeated int32 bandwidth_sequence = 1;
+}
+message PredictionResponse {
+  int32 predicted_state = 1;
+  bool is_confident = 2;
+}
+
+service ActionService {
+  rpc GetBestAction (ActionRequest) returns (ActionResponse);
+}
+message ActionRequest {
+  int32 state = 1;
+}
+message ActionResponse {
+  string action_name = 1;
+  int32 expected_throughput = 2;
+  bool is_optimal = 3;
+}
+
+service KnowledgeService {
+  rpc QueryCache (CacheRequest) returns (CacheResponse);
+  rpc StoreEntry (StoreRequest) returns (StoreAck);
+  rpc SyncKnowledge (stream SyncUpdate) returns (SyncAck);
+}
+message CacheRequest {
+  string state_key = 1;
+}
+message CacheResponse {
+  bool found = 1;
+  string action_name = 2;
+  int32 bandwidth = 3;
+}
+message StoreRequest {
+  string state_key = 1;
+  string action_name = 2;
+  int32 bandwidth = 3;
+}
+message StoreAck {
+  bool success = 1;
+}
+message SyncUpdate {
+  repeated StateActionPair pairs = 1;
+}
+message StateActionPair {
+  int32 state = 1;
+  string action = 2;
+  int32 bandwidth = 3;
+}
+message SyncAck {
+  int32 updated_count = 1;
+}
+
+service SyncService {
+  rpc QueryAndSync (StateRequest) returns (StateResponse);
+}
+message StateRequest {
+  int32 state = 1;
+  string source = 2;
+}
+message StateResponse {
+  string action_name = 1;
+  int32 bandwidth = 2;
+  bool is_optimal = 3;
+  string source = 4;
+}
