@@ -113,4 +113,50 @@ and if u find still issues may the installing the prerequisites issue
 `sudo apt update`
 `sudo apt install libforms-dev libforms2`
 `sudo apt install libuhd-dev uhd-host`
+
+## Troubleshooting: Docker Socket Permission Denied
+
+If you encounter the following error when running `docker compose up -d`:
+
+```bash
+permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
+```
+
+This happens because your current Linux user does not have the required permissions to access the Docker daemon. You can resolve this using one of the two methods below.
+
+### Solution 1: Grant Permanent User Permissions (Recommended)
+
+Add your current user to the `docker` group so you can run Docker commands without needing `sudo`.
+
+1. **Create the docker group** (if it doesn't already exist):
+   ```bash
+   sudo groupadd docker
+   ```
+
+2. **Add your user to the group**:
+   ```bash
+   sudo usermod -aG docker $USER
+   ```
+
+3. **Activate the group changes** for your current terminal session:
+   ```bash
+   newgrp docker
+   ```
+
+4. **Verify it works** by running your command without `sudo`:
+   ```bash
+   docker compose up -d
+   ```
+> **Note:** If you still face issues in new terminal windows, log out of your Ubuntu session completely and log back in to refresh user permissions.
+
+---
+
+### Solution 2: Quick Fix (Run with Sudo)
+
+If you just need a quick workaround without altering system user groups, simply prepend `sudo` to the command:
+
+```bash
+sudo docker compose up -d
+```
+
 These scripts are additive helpers and do not replace the official OAI documentation.
