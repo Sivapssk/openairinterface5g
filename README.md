@@ -104,4 +104,13 @@ This repository also includes helper scripts for installing prerequisites and st
 - `sudo ./scripts/install-prerequisites.sh`
 - `./scripts/build-and-run.sh`
 
+Make the script executable and run itSometimes scripts lose their execution permissions. Grant permission and run it again:
+-`chmod +x scripts/install-prerequisites.sh`
+-`sudo ./scripts/install-prerequisites.sh`
+same for build run
+
+and if u find still issues may the installing the prerequisites issue
+`sudo apt update`
+`sudo apt install libforms-dev libforms2`
+`sudo apt install libuhd-dev uhd-host`
 These scripts are additive helpers and do not replace the official OAI documentation.
